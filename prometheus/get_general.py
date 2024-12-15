@@ -6,7 +6,7 @@ def get_general(registry: CollectorRegistry):
     HOSTNAME = os.getenv("HOSTNAME")
     LOCATION = os.getenv("LOCATION")
     
-    GENERAL = Info("general", "General Information", ["hostname"])
+    GENERAL = Info("general", "General Information", ["hostname"], registry=registry)
     GENERAL.labels(hostname = HOSTNAME).info({
         "location": LOCATION
     })

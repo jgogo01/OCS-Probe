@@ -11,7 +11,7 @@ from prometheus_client import CollectorRegistry, push_to_gateway
 from repository.get_directus import get_cms
 from utils.validation import validation
 
-from prometheus.get_genernal import get_general
+from prometheus.get_general import get_general
 from prometheus.check_internal_speedtest import check_internal_speedtest
 from prometheus.check_ping import check_ping
 from prometheus.check_dns import check_dns
