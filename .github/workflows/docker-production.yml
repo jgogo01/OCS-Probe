@@ -1,0 +1,43 @@
+name: Docker Image Production
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Auto increment version and create new tag
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Create a new GitHub release with changelog
+      - name: Create GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+
+      # Build Docker image with version and environment as build arguments
+      - name: Build the Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ocs-probe:latest \
+          -t ${{ secrets.DOCKER_USERNAME }}/ocs-probe:${{ steps.tag_version.outputs.new_tag }} \
+          --build-arg VERSION=${{ steps.tag_version.outputs.new_tag }} \
+          --build-arg APP_ENV=production .
+
+      # Login and push to Docker Hub
+      - name: Push the Docker image
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/ocs-probe:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/ocs-probe:${{ steps.tag_version.outputs.new_tag }}
