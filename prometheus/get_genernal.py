@@ -6,8 +6,8 @@ def get_general(registry: CollectorRegistry):
     HOSTNAME = os.getenv("HOSTNAME")
     LOCATION = os.getenv("LOCATION")
     
-    IP_ADDRESS = Info("ip_addresses", "IP addresses of the host", ['hostname'], registry=registry)
-    IP_ADDRESS.labels(hostname = HOSTNAME).info({
+    GENERAL = Info("general", "General Information", ["hostname"])
+    GENERAL.labels(hostname = HOSTNAME).info({
         "location": LOCATION
     })
     
