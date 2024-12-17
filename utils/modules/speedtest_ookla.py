@@ -6,8 +6,8 @@ def speedtest_ookla(source: str):
         st = speedtest.Speedtest(source_address=source, secure=True)
         return {
             "server": st.get_best_server(),
-            "download": st.download(),
-            "upload": st.upload()
+            "download": st.download() / (1024 * 1024), #Byte to MB
+            "upload": st.upload() / (1024 * 1024)
         }
     except Exception as e:
         print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} Ookla Speedtest Error for {source}: {str(e)}", flush=True)
