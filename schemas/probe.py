@@ -5,4 +5,5 @@ class Probe(DirectusModel):
     hostname: str
     location: str
     type: str
+    department: str
     model_config = ConfigDict(collection="probe")

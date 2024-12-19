@@ -5,8 +5,9 @@ import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from schemas.setting import Setting
 from schemas.probe import Probe
+from schemas.department import Department
 
-async def get_cms():
+async def get_directus():
     CMS_TOKEN = os.getenv("CMS_TOKEN")
     CMS_HOST = os.getenv("CMS_HOST")
     HOSTNAME = os.getenv("HOSTNAME")
@@ -28,15 +29,24 @@ async def get_cms():
             os.environ[str(key).upper()] = str(value)
             
         # Probe
-        probe = await directus.collection(Probe).fields("location", "type").filter(hostname=HOSTNAME).read()
+        probe = await directus.collection(Probe).fields("location", "type", "department").filter(hostname=HOSTNAME).read()
+        probe_data = probe.item_as_dict()
         
         # Check if probe is not found, exit
-        if probe.item_as_dict() == None:
+        if probe_data == None:
             print(f"Probe {HOSTNAME} not found in CMS", flush=True)
             sys.exit(1)
-        
-        os.environ["LOCATION"] = str(probe.item_as_dict()["location"])
-        os.environ["TYPE_PROBE"] = str(probe.item_as_dict()["type"])
+            
+        os.environ["LOCATION"] = str(probe_data["location"])
+        os.environ["TYPE_PROBE"] = str(probe_data["type"])
+            
+        # Get Campus, Building From Probe
+        department = await directus.collection(Department).fields("campus", "building").filter(code=probe_data["department"]).read()
+        department_data = department.item_as_dict()
+
+        os.environ["DEPARTMENT"] = str(probe_data["department"])
+        os.environ["BUILDING"] = str(department_data["building"])
+        os.environ["CAMPUS"] = str(department_data["campus"])
         
         print("Connected CMS, Using from CMS", flush=True)
     except Exception as e:

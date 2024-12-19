@@ -8,7 +8,7 @@ import asyncio
 from dotenv import load_dotenv
 from prometheus_client import CollectorRegistry, push_to_gateway
 
-from repository.get_directus import get_cms
+from repository.get_directus import get_directus
 from utils.validation import validation
 
 from prometheus.get_general import get_general
@@ -25,7 +25,7 @@ if __name__ == "__main__":
         "CMS_HOST", 
         "HOSTNAME"
     ])
-    asyncio.run(get_cms())
+    asyncio.run(get_directus())
     validation([
         "INTERNAL_SPEEDTEST",
         "INTERNAL_GATEWAY",
@@ -33,6 +33,9 @@ if __name__ == "__main__":
         "PING_COUNT",
         "URL_CHECK_DNS_RESOLVER",
         "LOCATION",
+        "DEPARTMENT",
+        "BUILDING",
+        "CAMPUS",
         "INTERFACE_LAN",
         "INTERFACE_WLAN",
         "TYPE_PROBE",
