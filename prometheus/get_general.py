@@ -24,6 +24,6 @@ def get_general(registry: CollectorRegistry):
         building = BUILDING,
         department = DEPARTMENT
         ).info({
-        "latitude": lattitude,
-        "longitude": longitude
+        "latitude": str(lattitude),
+        "longitude": str(longitude)
     })
