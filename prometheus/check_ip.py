@@ -2,7 +2,7 @@ from prometheus_client import CollectorRegistry, Info
 from utils.ip_by_interface import get_ip_addresses
 import os
 
-def get_general(registry: CollectorRegistry):
+def check_ip(registry: CollectorRegistry):
     HOSTNAME = os.environ["HOSTNAME"]
     INTERFACE_LAN = os.environ["INTERFACE_LAN"]
     INTERFACE_WLAN = os.environ["INTERFACE_WLAN"]
@@ -23,7 +23,7 @@ def get_general(registry: CollectorRegistry):
     for interface in interfaces:
         IP_ADDRESS.labels(
             hostname=HOSTNAME,
-            type=interface["type"]
+            interface=interface["type"]
         ).info({
             "IPv4": interface["address"]["IPv4"],
             "IPv6": interface["address"]["IPv6"]

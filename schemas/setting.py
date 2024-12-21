@@ -9,4 +9,4 @@ class Setting(DirectusModel):
     ping_count: int
     url_check_dns_resolver: str
     push_gateway: str
-    model_config = ConfigDict(collection="setting")
+    model_config = ConfigDict(collection="Setting")

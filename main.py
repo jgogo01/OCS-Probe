@@ -11,12 +11,11 @@ from prometheus_client import CollectorRegistry, push_to_gateway
 from repository.get_directus import get_directus
 from utils.validation import validation
 
-from prometheus.get_general import get_general
 from prometheus.check_internal_speedtest import check_internal_speedtest
 from prometheus.check_ping import check_ping
 from prometheus.check_dns import check_dns
 from prometheus.check_external_speedtest import check_external_speedtest
-
+from prometheus.check_ip import check_ip
 
 if __name__ == "__main__":
     # Initial Setup
@@ -32,10 +31,6 @@ if __name__ == "__main__":
         "EXTERNAL_GATEWAY",
         "PING_COUNT",
         "URL_CHECK_DNS_RESOLVER",
-        "LOCATION",
-        "DEPARTMENT",
-        "BUILDING",
-        "CAMPUS",
         "INTERFACE_LAN",
         "INTERFACE_WLAN",
         "TYPE_PROBE",
@@ -50,13 +45,7 @@ if __name__ == "__main__":
     VERSION = os.getenv('APP_VERSION', 'production')
     print(f"Probe Version: {VERSION}", flush=True)
     
-    # Send General
-    general = CollectorRegistry()
-    get_general(general)
-    push_to_gateway(PUSH_GATEWAY, job=f"PROBE_{HOSTNAME}", registry=general)
-    print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} General Metrics pushed to Prometheus Pushgateway", flush=True)
-    
-    # Main
+    # # Main
     TYPE_PROBE = os.getenv("TYPE_PROBE")
     INTERVAL = int(os.getenv("INTERVAL"))
     while True:
@@ -65,9 +54,10 @@ if __name__ == "__main__":
             check_internal_speedtest(registry)
             check_dns(registry)
             check_ping(registry)
+            check_ip(registry)
             
             # Optional
-            if TYPE_PROBE == "external":
+            if TYPE_PROBE == "EXTERNAL":
                 check_external_speedtest(registry)
             
             push_to_gateway(PUSH_GATEWAY, job=f"PROBE", registry=registry)
