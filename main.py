@@ -60,7 +60,7 @@ if __name__ == "__main__":
             if TYPE_PROBE == "EXTERNAL":
                 check_external_speedtest(registry)
             
-            push_to_gateway(PUSH_GATEWAY, job=f"PROBE", registry=registry)
+            push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
             print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} All Metrics pushed to Prometheus Pushgateway", flush=True)
             
             time.sleep(INTERVAL)
