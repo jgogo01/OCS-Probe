@@ -3,6 +3,7 @@ import json
 from prometheus_client import CollectorRegistry, Info
 from utils.ip_by_interface import get_ip_addresses
 from utils.modules.dns_socket import check_dns_resolver
+from utils.error_status import error_status
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -27,6 +28,9 @@ def get_general(registry: CollectorRegistry):
     lattitude = location["coordinates"][1]
     longitude = location["coordinates"][0]
     
+    # Error Status
+    error = error_status(ip_wlan["IPv4"], ip_lan["IPv4"], ip_wlan["IPv6"], ip_lan["IPv6"], dns_wlan["response_time"], dns_lan["response_time"])
+    
     GENERAL = Info("GENERAL", "General Information", ['hostname'], registry=registry)
     GENERAL.labels(
         hostname = HOSTNAME,
@@ -39,5 +43,6 @@ def get_general(registry: CollectorRegistry):
         "wlan_ipv6": str(ip_wlan["IPv6"]),
         "lan_dns_response_time": str(dns_lan["response_time"]),
         "wlan_dns_response_time": str(dns_wlan["response_time"]),
-        "last_update": str(datetime.now(ZoneInfo('Asia/Bangkok')))
+        "last_update": str(datetime.now(ZoneInfo('Asia/Bangkok'))),
+        "error": error 
     })
