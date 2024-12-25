@@ -13,11 +13,9 @@ from utils.validation import validation
 
 from prometheus.check_internal_speedtest import check_internal_speedtest
 from prometheus.check_ping import check_ping
-from prometheus.check_dns import check_dns
 from prometheus.check_external_speedtest import check_external_speedtest
-from prometheus.check_ip import check_ip
 from prometheus.get_timestamp import get_timestamp
-from prometheus.get_location import get_location
+from prometheus.get_general import get_general
 
 if __name__ == "__main__":
     # Initial Setup
@@ -55,15 +53,13 @@ if __name__ == "__main__":
         try:
             registry = CollectorRegistry()
             check_internal_speedtest(registry)
-            check_dns(registry)
             check_ping(registry)
-            check_ip(registry)
             
             # Optional
             if TYPE_PROBE == "EXTERNAL":
                 check_external_speedtest(registry)
             
-            get_location(registry)
+            get_general(registry)
             get_timestamp(registry)
             
             push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
