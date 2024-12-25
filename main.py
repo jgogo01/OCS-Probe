@@ -17,6 +17,7 @@ from prometheus.check_dns import check_dns
 from prometheus.check_external_speedtest import check_external_speedtest
 from prometheus.check_ip import check_ip
 from prometheus.get_timestamp import get_timestamp
+from prometheus.get_location import get_location
 
 if __name__ == "__main__":
     # Initial Setup
@@ -61,7 +62,9 @@ if __name__ == "__main__":
             if TYPE_PROBE == "EXTERNAL":
                 check_external_speedtest(registry)
             
+            get_location(registry)
             get_timestamp(registry)
+            
             push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
             print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} All Metrics pushed to Prometheus Pushgateway", flush=True)
             
