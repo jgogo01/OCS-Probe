@@ -1,5 +1,9 @@
 FROM python:3.12.3-alpine
 WORKDIR /app
+
+ARG VERSION
+ENV APP_VERSION=$VERSION
+
 COPY . /app/
 
 RUN apk add --no-cache \
