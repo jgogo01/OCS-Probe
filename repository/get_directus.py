@@ -28,7 +28,7 @@ async def get_directus():
             os.environ[str(key).upper()] = str(value)
             
         # Probe
-        probe = await directus.collection(Probe).fields("type", "building").filter(hostname=HOSTNAME).read()
+        probe = await directus.collection(Probe).fields("type", "location").filter(hostname=HOSTNAME).read()
         probe_data = probe.item_as_dict()
         
         # Check if probe is not found, exit
@@ -37,6 +37,7 @@ async def get_directus():
             sys.exit(1)
             
         os.environ["TYPE_PROBE"] = str(probe_data["type"])
+        os.environ["LOCATION"] = str(probe_data["location"])
         
         print("Connected CMS, Using from CMS", flush=True)
     except Exception as e:

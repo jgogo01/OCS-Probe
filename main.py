@@ -37,7 +37,8 @@ if __name__ == "__main__":
         "INTERFACE_WLAN",
         "TYPE_PROBE",
         "PUSH_GATEWAY",
-        "INTERVAL"
+        "INTERVAL",
+        "LOCATION"
     ])
     load_dotenv(override=True)
     

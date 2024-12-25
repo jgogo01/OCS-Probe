@@ -13,7 +13,7 @@ def get_location(registry: CollectorRegistry):
     lattitude = location["coordinates"][0]
     longitude = location["coordinates"][1]
     
-    LOCATION = Info("LOCATION", "Location Information", ['campus','building','department','hostname'], registry=registry)
+    LOCATION = Info("LOCATION", "Location Information", ['hostname'], registry=registry)
     LOCATION.labels(
         hostname = HOSTNAME,
         ).info({
