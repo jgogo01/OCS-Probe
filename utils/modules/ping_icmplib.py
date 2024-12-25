@@ -2,6 +2,9 @@ import icmplib
 
 def ping_ipv4(source: str, destination: str, count: int):
     try:
+        if source == None:
+            raise Exception("Source IP Address is None") 
+           
         result = icmplib.ping(source=source, count=count, address=destination)
         return {
             "minRTT": result.min_rtt,

@@ -4,6 +4,7 @@ from prometheus_client import CollectorRegistry, Info
 from utils.ip_by_interface import get_ip_addresses
 from utils.modules.dns_socket import check_dns_resolver
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 def get_general(registry: CollectorRegistry):
     HOSTNAME = os.getenv("HOSTNAME")
@@ -32,11 +33,11 @@ def get_general(registry: CollectorRegistry):
         ).info({
         "latitude": str(lattitude),
         "longitude": str(longitude),
-        "lan_ipv4": ip_lan["IPv4"],
-        "lan_ipv6": ip_lan["IPv6"],
-        "wlan_ipv4": ip_wlan["IPv4"],
-        "wlan_ipv6": ip_wlan["IPv6"],
+        "lan_ipv4": str(ip_lan["IPv4"]),
+        "lan_ipv6": str(ip_lan["IPv6"]),
+        "wlan_ipv4": str(ip_wlan["IPv4"]),
+        "wlan_ipv6": str(ip_wlan["IPv6"]),
         "lan_dns_response_time": str(dns_lan["response_time"]),
         "wlan_dns_response_time": str(dns_wlan["response_time"]),
-        "last_update": str(datetime.now())
+        "last_update": str(datetime.now(ZoneInfo('Asia/Bangkok')))
     })
