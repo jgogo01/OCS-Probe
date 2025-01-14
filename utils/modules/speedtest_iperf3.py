@@ -1,6 +1,6 @@
 import iperf3
 from datetime import datetime
-
+from utils.msg_format import msg_format
 def speedtest_iperf3(source: str, destination: str, duration: int, port: int):
     
     try:
@@ -19,7 +19,7 @@ def speedtest_iperf3(source: str, destination: str, duration: int, port: int):
             "sent_Mbps": result.sent_Mbps
             }
     except Exception as e:
-        print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} IPerf3 Speedtest Error for {destination}: {str(e)}", flush=True)
+        msg_format("ERROR", f"IPerf3 Speedtest Error for {destination}: {str(e)}")
         return {
             "received_Mbps": 0,
             "sent_Mbps": 0

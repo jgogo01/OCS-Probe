@@ -1,4 +1,5 @@
 import netifaces
+from utils.msg_format import msg_format
 
 def get_ip_addresses(interface_name):
     try:
@@ -23,8 +24,8 @@ def get_ip_addresses(interface_name):
         }
             
     except ValueError:
-        print(f"Interface {interface_name} not found", flush=True)
+        msg_format("ERROR", f"Interface {interface_name} not found")
     except Exception as e:
-        print(f"Error: {str(e)}", flush=True)
+        msg_format("ERROR", f"Error: {str(e)}")
         
     return None, None

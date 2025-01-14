@@ -1,5 +1,5 @@
 import icmplib
-
+from utils.msg_format import msg_format
 def ping_ipv4(source: str, destination: str, count: int):
     try:
         if source == None:
@@ -15,7 +15,7 @@ def ping_ipv4(source: str, destination: str, count: int):
             "packetsSent": result.packets_sent
         }
     except Exception as e:
-        print(f"ICMP Error for {destination}: {str(e)}", flush=True)
+        msg_format("ERROR", f"ICMP Error for {destination}: {str(e)}")
         return {
             "minRTT": 0,
             "maxRTT": 0,

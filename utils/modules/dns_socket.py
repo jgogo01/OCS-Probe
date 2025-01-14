@@ -1,6 +1,6 @@
 import socket
 import time
-from datetime import datetime
+from utils.msg_format import msg_format
 
 def check_dns_resolver(source, url_resolver):
     try:
@@ -23,7 +23,7 @@ def check_dns_resolver(source, url_resolver):
             "response_time": response_time
         }
     except Exception as e:
-        print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} DNS Error for {url_resolver}: {str(e)}" , flush=True)
+        msg_format("ERROR", f"DNS Error for {url_resolver}: {str(e)}")
         return {
             "src_address": "",
             "dst_address": "",

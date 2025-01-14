@@ -1,6 +1,6 @@
 import speedtest as speedtest
 from datetime import datetime
-
+from utils.msg_format import msg_format
 def speedtest_ookla(source: str):
     try:
         if source == None:
@@ -13,7 +13,7 @@ def speedtest_ookla(source: str):
             "upload": st.upload() / (1024 * 1024)
         }
     except Exception as e:
-        print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} Ookla Speedtest Error for {source}: {str(e)}", flush=True)
+        msg_format("ERROR", f"Ookla Speedtest Error for {source}: {str(e)}")
         return {
             "server": "",
             "download": 0,

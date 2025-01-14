@@ -5,6 +5,7 @@ import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from schemas.setting import Setting
 from schemas.probe import Probe
+from utils.msg_format import msg_format
 
 async def get_directus():
     CMS_TOKEN = os.getenv("CMS_TOKEN")
@@ -33,13 +34,13 @@ async def get_directus():
         
         # Check if probe is not found, exit
         if probe_data == None:
-            print(f"Probe {HOSTNAME} not found in CMS", flush=True)
+            msg_format("ERROR", f"Probe {HOSTNAME} not found in CMS")
             sys.exit(1)
             
         os.environ["TYPE_PROBE"] = str(probe_data["type"])
         os.environ["LOCATION"] = str(probe_data["location"])
         
-        print("Connected CMS, Using from CMS", flush=True)
+        msg_format("INFO", "Connected CMS, Using from CMS")
     except Exception as e:
-        print(f"Cannot connect CMS, Please check your CMS configuration: {str(e)}", flush=True)
+        msg_format("ERROR", f"Cannot connect CMS, Please check your CMS configuration: {str(e)}")
         sys.exit(1)

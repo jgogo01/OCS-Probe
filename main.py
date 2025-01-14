@@ -3,13 +3,13 @@ warnings.filterwarnings("ignore", message="Field name \"schema\" in \"BaseDirect
 
 import os
 import time
-from datetime import datetime
 import asyncio
 from dotenv import load_dotenv
 from prometheus_client import CollectorRegistry, push_to_gateway
 
 from repository.get_directus import get_directus
 from utils.validation import validation
+from utils.msg_format import msg_format
 
 from prometheus.check_internal_speedtest import check_internal_speedtest
 from prometheus.check_ping import check_ping
@@ -63,9 +63,8 @@ if __name__ == "__main__":
             get_timestamp(registry)
             
             push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
-            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} All Metrics pushed to Prometheus Pushgateway", flush=True)
-            
+            msg_format("INFO", "All Metrics pushed to Prometheus Pushgateway")
             time.sleep(INTERVAL)
         except Exception as e:
-            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} Error Main: {e}", flush=True)
+            msg_format("INFO", str(e))
             time.sleep(30)
