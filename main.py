@@ -36,7 +36,8 @@ if __name__ == "__main__":
         "TYPE_PROBE",
         "PUSH_GATEWAY",
         "INTERVAL",
-        "LOCATION"
+        "LOCATION",
+        "CAMPUS"
     ])
     load_dotenv(override=True)
     

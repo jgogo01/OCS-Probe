@@ -5,6 +5,7 @@ import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from schemas.setting import Setting
 from schemas.probe import Probe
+from schemas.building import Building
 from utils.msg_format import msg_format
 
 async def get_directus():
@@ -29,13 +30,18 @@ async def get_directus():
             os.environ[str(key).upper()] = str(value)
             
         # Probe
-        probe = await directus.collection(Probe).fields("type", "location").filter(hostname=HOSTNAME).read()
+        probe = await directus.collection(Probe).fields("type", "location", "building").filter(hostname=HOSTNAME).read()
         probe_data = probe.item_as_dict()
         
         # Check if probe is not found, exit
         if probe_data == None:
             msg_format("ERROR", f"Probe {HOSTNAME} not found in CMS")
             sys.exit(1)
+            
+        # Get Campus from Building
+        building = await directus.collection(Building).fields("campus").filter(code=probe_data["building"]).read()
+        building_data = building.item_as_dict()
+        os.environ["CAMPUS"] = str(building_data["campus"])
             
         os.environ["TYPE_PROBE"] = str(probe_data["type"])
         os.environ["LOCATION"] = str(probe_data["location"])
