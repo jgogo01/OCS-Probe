@@ -20,7 +20,7 @@ async def get_directus():
         fields = ["internal_speedtest", 
                   "internal_gateway", "external_gateway", 
                   "ping_count", "url_check_dns_resolver", "push_gateway",
-                  "interval"]
+                  "interval", "curl_test"]
         fields = ",".join(fields)
         fields = str(fields)
         
