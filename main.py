@@ -67,7 +67,7 @@ if __name__ == "__main__":
             get_general(registry)
             get_timestamp(registry)
             
-            # push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
+            push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
             msg_format("INFO", "All Metrics pushed to Prometheus Pushgateway")
             time.sleep(INTERVAL)
         except Exception as e:
