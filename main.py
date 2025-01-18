@@ -4,6 +4,7 @@ warnings.filterwarnings("ignore", message="Field name \"schema\" in \"BaseDirect
 import os
 import time
 import asyncio
+import platform
 from dotenv import load_dotenv
 from prometheus_client import CollectorRegistry, push_to_gateway
 
@@ -18,6 +19,9 @@ from prometheus.get_timestamp import get_timestamp
 from prometheus.get_general import get_general
 
 if __name__ == "__main__":
+    #Get Hostname From OS
+    os.environ["HOSTNAME"] = platform.node()
+    
     # Initial Setup
     validation([
         "CMS_TOKEN", 
@@ -63,7 +67,7 @@ if __name__ == "__main__":
             get_general(registry)
             get_timestamp(registry)
             
-            push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
+            # push_to_gateway(PUSH_GATEWAY, job=f"METRICS_{HOSTNAME}", registry=registry)
             msg_format("INFO", "All Metrics pushed to Prometheus Pushgateway")
             time.sleep(INTERVAL)
         except Exception as e:
